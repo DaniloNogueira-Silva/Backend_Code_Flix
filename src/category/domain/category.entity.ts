@@ -1,6 +1,6 @@
+import { EntityValidationError } from "../../shared/domain/validators/validation.error";
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
 import { CategoryValidatorFactory } from "./category.validator";
-
 
 export type CategoryConstructorProps = {
     category_id?: Uuid;
@@ -16,7 +16,8 @@ export type CategoryCreateCommand = {
     is_active?: boolean;
 }
 
-export class Category {
+export class Category
+{
     category_id: Uuid;
     name: string;
     description: string | null;
@@ -24,7 +25,8 @@ export class Category {
     created_at: Date;
 
 
-    constructor(props: CategoryConstructorProps) {
+    constructor ( props: CategoryConstructorProps )
+    {
         this.category_id = props.category_id ?? new Uuid();
         this.name = props.name;
         this.description = props.description ?? null;
@@ -32,32 +34,51 @@ export class Category {
         this.created_at = props.created_at ?? new Date();
     }
 
-    static create(props: CategoryConstructorProps) {
-        return new Category(props);
+    static create ( props: CategoryConstructorProps ): Category
+    {
+        const category = new Category( props );
+        Category.validate( category );
+        return category;
     }
 
-    changeName(name: string): void {
+    changeName ( name: string ): void
+    {
         this.name = name;
+        Category.validate( this )
     }
 
-    changeDescription(description: string): void {
+    changeDescription ( description: string ): void
+    {
         this.description = description;
+        Category.validate( this )
     }
 
-    activate(): void {
+    activate (): void
+    {
         this.is_active = true;
     }
 
-    deactivate(): void {
+    deactivate (): void
+    {
         this.is_active = false;
     }
 
-    static validate(entity: Category){
+    static validate ( entity: Category ): any
+    {
         const validator = CategoryValidatorFactory.create();
-        return validator.validate(entity);
+        const isValid = validator.validate( entity );
+        if ( !isValid )
+        {
+            throw new EntityValidationError( validator.errors )
+        } else
+        {
+            return validator.validate( entity );
+
+        }
     }
 
-    toJson() {
+    toJson ()
+    {
         return {
             category_id: this.category_id.id,
             name: this.name,

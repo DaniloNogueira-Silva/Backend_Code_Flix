@@ -8,7 +8,7 @@ export abstract class ClassValidatorFields<PropsValidated> implements IValidator
 
     validate(data:any):boolean {
         const errors = validateSync(data);
-        if(errors.length > 0) {
+        if(errors.length) {
             this.errors = {};
             for (const error of errors) {
                 const field = error.property;

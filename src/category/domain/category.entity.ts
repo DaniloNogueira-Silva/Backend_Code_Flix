@@ -20,6 +20,10 @@ export type CategoryCreateCommand = {
 
 export class Category extends Entity
 {
+    static fake ()
+    {
+        throw new Error( 'Method not implemented.' );
+    }
     category_id: Uuid;
     name: string;
     description: string | null;

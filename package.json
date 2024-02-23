@@ -30,6 +30,8 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@types/chance": "^1.1.6",
+    "chance": "^1.1.11",
     "class-validator": "^0.14.0",
     "lodash": "^4.17.21",
     "uuid": "^9.0.1"

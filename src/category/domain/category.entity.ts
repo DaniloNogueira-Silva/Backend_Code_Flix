@@ -28,7 +28,6 @@ export class Category extends Entity
     is_active: boolean;
     created_at: Date;
 
-
     constructor ( props: CategoryConstructorProps )
     {
         super();

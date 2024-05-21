@@ -1,11 +1,11 @@
 import { literal } from "sequelize";
-import { SortDirection } from "../../../shared/domain/repository/search-params";
-import { CategorySearchParams, CategorySearchResult, ICategoryRepository } from "../../domain/category.repository";
-import { Category } from "../../domain/category.entity";
+import { SortDirection } from "../../../../shared/domain/repository/search-params";
+import { CategorySearchParams, CategorySearchResult, ICategoryRepository } from "../../../domain/category.repository";
+import { Category } from "../../../domain/category.entity";
 import { CategoryModel } from "./category.model";
-import { NotFoundError } from "../../../shared/domain/errors/not-found.error";
-import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
-import { InMemorySearchableRepository } from "../../../shared/infra/db/in-memory/in-memory-repository";
+import { NotFoundError } from "../../../../shared/domain/errors/not-found.error";
+import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
+import { InMemorySearchableRepository } from "../../../../shared/infra/db/in-memory/in-memory-repository";
 import { Op } from "sequelize";
 import { CategoryModelMapper } from "./category-model-mapper";
 

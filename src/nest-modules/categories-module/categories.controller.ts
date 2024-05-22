@@ -15,6 +15,8 @@ import { UpdateCategoryUseCase } from 'src/core/category/application/update-cate
 import { DeleteCategoryUseCase } from 'src/core/category/application/delete-category/delete-category.use-case';
 import { GetCategoryUseCase } from 'src/core/category/application/get-category/get-category.use-case';
 import { ListCategoriesUseCase } from 'src/core/category/application/list-category/list-categories.use-case';
+import { CategoryPresenter } from './categories.presenter';
+import { CategoryOutput } from 'src/core/category/application/common/category-output';
 
 @Controller('categories')
 export class CategoriesController {
@@ -34,7 +36,10 @@ export class CategoriesController {
   private listUseCase: ListCategoriesUseCase;
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {}
+  async create(@Body() createCategoryDto: CreateCategoryDto) {
+    const output = await this.createUseCase.execute(createCategoryDto);
+    return CategoriesController.serialize(output);
+  }
 
   @Get()
   findAll() {}
@@ -50,4 +55,8 @@ export class CategoriesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {}
+
+  static serialize(output: CategoryOutput) {
+    return new CategoryPresenter(output);
+  }
 }

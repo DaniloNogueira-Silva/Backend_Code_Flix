@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
   Inject,
+  ParseUUIDPipe,
+  HttpCode,
+  Query,
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -15,8 +18,12 @@ import { UpdateCategoryUseCase } from 'src/core/category/application/update-cate
 import { DeleteCategoryUseCase } from 'src/core/category/application/delete-category/delete-category.use-case';
 import { GetCategoryUseCase } from 'src/core/category/application/get-category/get-category.use-case';
 import { ListCategoriesUseCase } from 'src/core/category/application/list-category/list-categories.use-case';
-import { CategoryPresenter } from './categories.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from './categories.presenter';
 import { CategoryOutput } from 'src/core/category/application/common/category-output';
+import { SearchCategoriesDto } from './dto/search-categories.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -42,19 +49,38 @@ export class CategoriesController {
   }
 
   @Get()
-  findAll() {}
+  async search(@Query() searCategoriesDto: SearchCategoriesDto) {
+    const output = await this.listUseCase.execute(searCategoriesDto);
+    return new CategoryCollectionPresenter(output);
+  }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {}
+  async findOne(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+  ) {
+    const output = await this.getUseCase.execute({ id });
+    return CategoriesController.serialize(output);
+  }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
-  ) {}
+  ) {
+    const output = await this.updateUseCase.execute({
+      ...updateCategoryDto,
+      id,
+    });
+    return CategoriesController.serialize(output);
+  }
 
+  @HttpCode(204) //usando o httpCode já que não retorna nada do caso de uso
   @Delete(':id')
-  remove(@Param('id') id: string) {}
+  remove(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+  ) {
+    return this.deleteUseCase.execute({ id });
+  }
 
   static serialize(output: CategoryOutput) {
     return new CategoryPresenter(output);

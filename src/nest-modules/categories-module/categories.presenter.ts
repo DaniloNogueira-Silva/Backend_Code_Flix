@@ -1,12 +1,13 @@
 import { Transform } from 'class-transformer';
+import { CollectionPresenter } from '../shared-module/collection.presenter';
 import { CategoryOutput } from 'src/core/category/application/common/category-output';
 import { ListCategoriesOutput } from 'src/core/category/application/list-category/list-categories.use-case';
-import { CollectionPresenter } from '../shared-module/collection.presenter';
 
 export class CategoryPresenter {
   id: string;
   name: string;
   description: string | null;
+  is_active: boolean;
   @Transform(({ value }: { value: Date }) => value.toISOString())
   created_at: Date;
 
@@ -14,6 +15,7 @@ export class CategoryPresenter {
     this.id = output.id;
     this.name = output.name;
     this.description = output.description;
+    this.is_active = output.is_active;
     this.created_at = output.created_at;
   }
 }

@@ -1,4 +1,4 @@
-import { ListCategoriesInput } from "src/core/category/application/list-category/list-categories.use-case";
+import { ListCategoriesInput } from "src/core/category/application/use-cases/list-categories/list-categories.use-case";
 import { SortDirection } from "src/core/shared/domain/repository/search-params";
 
 

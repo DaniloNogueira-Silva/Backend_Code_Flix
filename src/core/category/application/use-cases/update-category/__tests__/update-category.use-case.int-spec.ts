@@ -1,10 +1,9 @@
-import { CategorySequelizeRepository } from 'src/core/category/infra/db/sequelize/category-sequelize.repository';
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category, CategoryId } from '../../../../domain/category.aggregate';
+import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
 import { UpdateCategoryUseCase } from '../update-category.use-case';
-import { setupSequelize } from 'src/core/shared/infra/testing/helpers';
-import { CategoryModel } from 'src/core/category/infra/db/sequelize/category.model';
-import { NotFoundError } from 'src/core/shared/domain/errors/not-found.error';
-import { Category } from 'src/core/category/domain/category.entity';
-import { Uuid } from 'src/core/shared/domain/value-objects/uuid.vo';
 
 describe('UpdateCategoryUseCase Integration Tests', () => {
   let useCase: UpdateCategoryUseCase;
@@ -18,10 +17,10 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
   });
 
   it('should throws error when entity not found', async () => {
-    const id = new Uuid();
+    const categoryId = new CategoryId();
     await expect(() =>
-      useCase.execute({ id: id.id, name: 'fake' }),
-    ).rejects.toThrow(new NotFoundError(id.id, Category));
+      useCase.execute({ id: categoryId.id, name: 'fake' }),
+    ).rejects.toThrow(new NotFoundError(categoryId.id, Category));
   });
 
   it('should update a category', async () => {
@@ -149,7 +148,7 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
         ...('is_active' in i.input && { is_active: i.input.is_active }),
       });
       const entityUpdated = await repository.findById(
-        new Uuid(i.input.id),
+        new CategoryId(i.input.id),
       );
       expect(output).toStrictEqual({
         id: entity.category_id.id,

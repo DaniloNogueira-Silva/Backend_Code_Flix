@@ -14,9 +14,9 @@ const models = [CategoryModel];
           return {
             dialect: 'sqlite',
             host: configService.get('DB_HOST'),
+            models,
             logging: configService.get('DB_LOGGING'),
             autoLoadModels: configService.get('DB_AUTO_LOAD_MODELS'),
-            models,
           };
         }
 
@@ -28,9 +28,9 @@ const models = [CategoryModel];
             database: configService.get('DB_DATABASE'),
             username: configService.get('DB_USERNAME'),
             password: configService.get('DB_PASSWORD'),
+            models,
             logging: configService.get('DB_LOGGING'),
             autoLoadModels: configService.get('DB_AUTO_LOAD_MODELS'),
-            models,
           };
         }
 

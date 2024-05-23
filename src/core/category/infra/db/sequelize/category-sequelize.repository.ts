@@ -1,6 +1,6 @@
 import { Op, literal } from 'sequelize';
 import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { Category } from '../../../domain/category.entity';
+import { Category } from '../../../domain/category.aggregate';
 import {
   CategorySearchParams,
   CategorySearchResult,

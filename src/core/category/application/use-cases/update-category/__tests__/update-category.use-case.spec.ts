@@ -1,9 +1,8 @@
-
-import { CategoryInMemoryRepository } from 'src/core/category/infra/db/in-memory/category-in-memory.repository';
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { InvalidUuidError } from '../../../../../shared/domain/value-objects/uuid.vo';
+import { Category, CategoryId } from '../../../../domain/category.aggregate';
+import { CategoryInMemoryRepository } from '../../../../infra/db/in-memory/category-in-memory.repository';
 import { UpdateCategoryUseCase } from '../update-category.use-case';
-import { InvalidUuidError, Uuid } from 'src/core/shared/domain/value-objects/uuid.vo';
-import { NotFoundError } from 'src/core/shared/domain/errors/not-found.error';
-import { Category } from 'src/core/category/domain/category.entity';
 
 describe('UpdateCategoryUseCase Unit Tests', () => {
   let useCase: UpdateCategoryUseCase;
@@ -19,11 +18,11 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
       useCase.execute({ id: 'fake id', name: 'fake' }),
     ).rejects.toThrow(new InvalidUuidError());
 
-    const id = new Uuid();
+    const categoryId = new CategoryId();
 
     await expect(() =>
-      useCase.execute({ id: id.id, name: 'fake' }),
-    ).rejects.toThrow(new NotFoundError(id.id, Category));
+      useCase.execute({ id: categoryId.id, name: 'fake' }),
+    ).rejects.toThrow(new NotFoundError(categoryId.id, Category));
   });
 
   it('should throw an error when aggregate is not valid', async () => {

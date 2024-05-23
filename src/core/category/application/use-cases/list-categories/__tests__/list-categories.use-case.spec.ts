@@ -1,9 +1,8 @@
-
-import { CategoryInMemoryRepository } from 'src/core/category/infra/db/in-memory/category-in-memory.repository';
+import { Category } from '../../../../domain/category.aggregate';
+import { CategorySearchResult } from '../../../../domain/category.repository';
+import { CategoryInMemoryRepository } from '../../../../infra/db/in-memory/category-in-memory.repository';
 import { CategoryOutputMapper } from '../../common/category-output';
 import { ListCategoriesUseCase } from '../list-categories.use-case';
-import { CategorySearchResult } from 'src/core/category/domain/category.repository';
-import { Category } from 'src/core/category/domain/category.entity';
 
 describe('ListCategoriesUseCase Unit Tests', () => {
   let useCase: ListCategoriesUseCase;

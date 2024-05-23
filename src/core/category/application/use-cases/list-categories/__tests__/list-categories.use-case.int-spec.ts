@@ -1,8 +1,8 @@
 import { ListCategoriesUseCase } from '../list-categories.use-case';
-import { setupSequelize } from 'src/core/shared/infra/testing/helpers';
-import { Category } from 'src/core/category/domain/category.entity';
-import { CategorySequelizeRepository } from 'src/core/category/infra/db/sequelize/category-sequelize.repository';
-import { CategoryModel } from 'src/core/category/infra/db/sequelize/category.model';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category } from '../../../../domain/category.aggregate';
+import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
 import { CategoryOutputMapper } from '../../common/category-output';
 
 describe('ListCategoriesUseCase Integration Tests', () => {

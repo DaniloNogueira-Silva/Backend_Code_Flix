@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { instanceToPlain } from 'class-transformer';
 import { ICategoryRepository } from '../../src/core/category/domain/category.repository';
-import { CategoryOutputMapper } from 'src/core/category/application/common/category-output';
+import { CategoryOutputMapper } from '../../src/core/category/application/use-cases/common/category-output';
 import * as CategoryProviders from '../../src/nest-modules/categories-module/categories.providers';
 import { startApp } from '../../src/nest-modules/shared-module/testing/helpers';
 import { CategoriesController } from '../../src/nest-modules/categories-module/categories.controller';
@@ -19,7 +19,9 @@ describe('CategoriesController (e2e)', () => {
         categoryRepo = nestApp.app.get<ICategoryRepository>(
           CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
-        await categoryRepo.bulkInsert(Object.values(entitiesMap));
+        await categoryRepo.bulkInsert(
+          Object.values(entitiesMap),
+        );
       });
 
       test.each(arrange)(
@@ -52,7 +54,9 @@ describe('CategoriesController (e2e)', () => {
         categoryRepo = nestApp.app.get<ICategoryRepository>(
           CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
-        await categoryRepo.bulkInsert(Object.values(entitiesMap));
+        await categoryRepo.bulkInsert(
+          Object.values(entitiesMap),
+        );
       });
 
       test.each([arrange])(

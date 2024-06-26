@@ -52,6 +52,10 @@ Content-Type: application/json
 
 ###
 
+GET http://localhost:3000/cast-members
+
+###
+
 @castMemberId = {{createCastMember.response.body.data.id}}
 
 

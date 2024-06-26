@@ -24,7 +24,6 @@ import {
   Category,
   CategoryId,
 } from '../../../core/category/domain/category.aggregate';
-import { AuthModule } from '../../auth-module/auth.module';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -35,7 +34,6 @@ describe('CategoriesController Integration Tests', () => {
       imports: [
         ConfigModule.forRoot(),
         DatabaseModule,
-        AuthModule,
         CategoriesModule,
       ],
     }).compile();

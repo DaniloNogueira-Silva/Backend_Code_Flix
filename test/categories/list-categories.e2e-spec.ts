@@ -19,9 +19,7 @@ describe('CategoriesController (e2e)', () => {
         categoryRepo = nestApp.app.get<ICategoryRepository>(
           CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
-        await categoryRepo.bulkInsert(
-          Object.values(entitiesMap),
-        );
+        await categoryRepo.bulkInsert(Object.values(entitiesMap));
       });
 
       test.each(arrange)(
@@ -54,9 +52,7 @@ describe('CategoriesController (e2e)', () => {
         categoryRepo = nestApp.app.get<ICategoryRepository>(
           CategoryProviders.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
-        await categoryRepo.bulkInsert(
-          Object.values(entitiesMap),
-        );
+        await categoryRepo.bulkInsert(Object.values(entitiesMap));
       });
 
       test.each([arrange])(

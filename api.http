@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/categories
-Authorization: Bearer {{jwtToken}}
+# Authorization: Bearer {{jwtToken}}
 
 ###
 GET http://localhost:3000/categories/8f4b7b9c-3f7a-4b6c-8b0c-1c9c5b8b9b6a

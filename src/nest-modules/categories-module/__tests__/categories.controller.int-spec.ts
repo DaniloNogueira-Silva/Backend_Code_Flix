@@ -5,23 +5,26 @@ import { ConfigModule } from '../../config-module/config.module';
 import { DatabaseModule } from '../../database-module/database.module';
 import { CategoriesModule } from '../categories.module';
 import { CATEGORY_PROVIDERS } from '../categories.providers';
-import {
-  CategoryCollectionPresenter,
-  CategoryPresenter,
-} from '../categories.presenter';
-import { CategoryOutputMapper } from 'src/core/category/application/use-cases/common/category-output';
-import { Category } from '../../../core/category/domain/category.aggregate';
-import { Uuid } from 'src/core/shared/domain/value-objects/uuid.vo';
-import { CreateCategoryUseCase } from 'src/core/category/application/use-cases/create-category/create-category.use-case';
-import { UpdateCategoryUseCase } from 'src/core/category/application/use-cases/update-category/update-category.use-case';
-import { ListCategoriesUseCase } from 'src/core/category/application/use-cases/list-categories/list-categories.use-case';
-import { GetCategoryUseCase } from 'src/core/category/application/use-cases/get-category/get-category.use-case';
-import { DeleteCategoryUseCase } from 'src/core/category/application/use-cases/delete-category/delete-category.use-case';
+import { CreateCategoryUseCase } from '../../../core/category/application/use-cases/create-category/create-category.use-case';
+import { UpdateCategoryUseCase } from '../../../core/category/application/use-cases/update-category/update-category.use-case';
+import { ListCategoriesUseCase } from '../../../core/category/application/use-cases/list-categories/list-categories.use-case';
+import { GetCategoryUseCase } from '../../../core/category/application/use-cases/get-category/get-category.use-case';
+import { DeleteCategoryUseCase } from '../../../core/category/application/use-cases/delete-category/delete-category.use-case';
 import {
   CreateCategoryFixture,
   ListCategoriesFixture,
   UpdateCategoryFixture,
 } from '../testing/category-fixture';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from '../categories.presenter';
+import { CategoryOutputMapper } from '../../../core/category/application/use-cases/common/category-output';
+import {
+  Category,
+  CategoryId,
+} from '../../../core/category/domain/category.aggregate';
+import { AuthModule } from '../../auth-module/auth.module';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -29,7 +32,12 @@ describe('CategoriesController Integration Tests', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), DatabaseModule, CategoriesModule],
+      imports: [
+        ConfigModule.forRoot(),
+        DatabaseModule,
+        AuthModule,
+        CategoriesModule,
+      ],
     }).compile();
     controller = module.get<CategoriesController>(CategoriesController);
     repository = module.get<ICategoryRepository>(
@@ -52,7 +60,7 @@ describe('CategoriesController Integration Tests', () => {
       'when body is $send_data',
       async ({ send_data, expected }) => {
         const presenter = await controller.create(send_data);
-        const entity = await repository.findById(new Uuid(presenter.id));
+        const entity = await repository.findById(new CategoryId(presenter.id));
         expect(entity!.toJSON()).toStrictEqual({
           category_id: presenter.id,
           created_at: presenter.created_at,
@@ -80,7 +88,7 @@ describe('CategoriesController Integration Tests', () => {
           category.category_id.id,
           send_data,
         );
-        const entity = await repository.findById(new Uuid(presenter.id));
+        const entity = await repository.findById(new CategoryId(presenter.id));
         expect(entity!.toJSON()).toStrictEqual({
           category_id: presenter.id,
           created_at: presenter.created_at,

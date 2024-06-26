@@ -1,9 +1,9 @@
 import { OmitType } from '@nestjs/mapped-types';
-import { UpdateCategoryInput } from 'src/core/category/application/use-cases/update-category/update-category.input';
+import { UpdateCategoryInput } from '../../../core/category/application/use-cases/update-category/update-category.input';
 
-export class UpdatedCategoryInputWithoutId extends OmitType(
+export class UpdateCategoryInputWithoutId extends OmitType(
   UpdateCategoryInput,
   ['id'] as const,
 ) {}
 
-export class UpdateCategoryDto extends UpdatedCategoryInputWithoutId {}
+export class UpdateCategoryDto extends UpdateCategoryInputWithoutId {}

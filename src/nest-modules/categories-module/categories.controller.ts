@@ -10,19 +10,20 @@ import {
   ParseUUIDPipe,
   HttpCode,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CreateCategoryUseCase } from '../../../src/core/category/application/use-cases/create-category/create-category.use-case';
-import { UpdateCategoryUseCase } from '../../../src/core/category/application/use-cases/update-category/update-category.use-case';
-import { DeleteCategoryUseCase } from '../../../src/core/category/application/use-cases/delete-category/delete-category.use-case';
-import { GetCategoryUseCase } from '../../../src/core/category/application/use-cases/get-category/get-category.use-case';
-import { ListCategoriesUseCase } from '../../../src/core/category/application/use-cases/list-categories/list-categories.use-case';
+import { CreateCategoryUseCase } from '../../core/category/application/use-cases/create-category/create-category.use-case';
+import { UpdateCategoryUseCase } from '../../core/category/application/use-cases/update-category/update-category.use-case';
+import { DeleteCategoryUseCase } from '../../core/category/application/use-cases/delete-category/delete-category.use-case';
+import { GetCategoryUseCase } from '../../core/category/application/use-cases/get-category/get-category.use-case';
+import { ListCategoriesUseCase } from '../../core/category/application/use-cases/list-categories/list-categories.use-case';
 import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from './categories.presenter';
-import { CategoryOutput } from '../../../src/core/category/application/use-cases/common/category-output';
+import { CategoryOutput } from '../../core/category/application/use-cases/common/category-output';
 import { SearchCategoriesDto } from './dto/search-categories.dto';
 
 @Controller('categories')
@@ -49,8 +50,8 @@ export class CategoriesController {
   }
 
   @Get()
-  async search(@Query() searCategoriesDto: SearchCategoriesDto) {
-    const output = await this.listUseCase.execute(searCategoriesDto);
+  async search(@Query() searchParamsDto: SearchCategoriesDto) {
+    const output = await this.listUseCase.execute(searchParamsDto);
     return new CategoryCollectionPresenter(output);
   }
 
@@ -74,7 +75,7 @@ export class CategoriesController {
     return CategoriesController.serialize(output);
   }
 
-  @HttpCode(204) //usando o httpCode já que não retorna nada do caso de uso
+  @HttpCode(204)
   @Delete(':id')
   remove(
     @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,

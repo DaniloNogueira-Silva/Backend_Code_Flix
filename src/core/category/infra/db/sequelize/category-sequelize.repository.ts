@@ -1,6 +1,6 @@
 import { Op, literal } from 'sequelize';
 import { NotFoundError } from '../../../../shared/domain/errors/not-found.error';
-import { Category } from '../../../domain/category.aggregate';
+import { Category, CategoryId } from '../../../domain/category.aggregate';
 import {
   CategorySearchParams,
   CategorySearchResult,
@@ -9,8 +9,7 @@ import {
 import { CategoryModel } from './category.model';
 import { CategoryModelMapper } from './category-model-mapper';
 import { SortDirection } from '../../../../shared/domain/repository/search-params';
-import { Uuid } from 'src/core/shared/domain/value-objects/uuid.vo';
-import { InvalidArgumentError } from 'src/core/shared/domain/errors/invalid-argument.error';
+import { InvalidArgumentError } from '../../../../shared/domain/errors/invalid-argument.error';
 
 export class CategorySequelizeRepository implements ICategoryRepository {
   sortableFields: string[] = ['name', 'created_at'];
@@ -50,7 +49,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
     }
   }
 
-  async delete(category_id: Uuid): Promise<void> {
+  async delete(category_id: CategoryId): Promise<void> {
     const id = category_id.id;
 
     const affectedRows = await this.categoryModel.destroy({
@@ -62,7 +61,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
     }
   }
 
-  async findByIds(ids: Uuid[]): Promise<Category[]> {
+  async findByIds(ids: CategoryId[]): Promise<Category[]> {
     const models = await this.categoryModel.findAll({
       where: {
         category_id: {
@@ -74,8 +73,8 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   async existsById(
-    ids: Uuid[],
-  ): Promise<{ exists: Uuid[]; not_exists: Uuid[] }> {
+    ids: CategoryId[],
+  ): Promise<{ exists: CategoryId[]; not_exists: CategoryId[] }> {
     if (!ids.length) {
       throw new InvalidArgumentError(
         'ids must be an array with at least one element',
@@ -90,19 +89,19 @@ export class CategorySequelizeRepository implements ICategoryRepository {
         },
       },
     });
-    const existsUuids = existsCategoryModels.map(
-      (m) => new Uuid(m.category_id),
+    const existsCategoryIds = existsCategoryModels.map(
+      (m) => new CategoryId(m.category_id),
     );
-    const notExistsUuids = ids.filter(
-      (id) => !existsUuids.some((e) => e.equals(id)),
+    const notExistsCategoryIds = ids.filter(
+      (id) => !existsCategoryIds.some((e) => e.equals(id)),
     );
     return {
-      exists: existsUuids,
-      not_exists: notExistsUuids,
+      exists: existsCategoryIds,
+      not_exists: notExistsCategoryIds,
     };
   }
 
-  async findById(entity_id: Uuid): Promise<Category | null> {
+  async findById(entity_id: CategoryId): Promise<Category | null> {
     const model = await this.categoryModel.findByPk(entity_id.id);
 
     return model ? CategoryModelMapper.toEntity(model) : null;

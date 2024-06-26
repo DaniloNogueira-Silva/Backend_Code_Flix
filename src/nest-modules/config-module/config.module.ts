@@ -15,7 +15,7 @@ type DB_SCHEMA_TYPE = {
   DB_DATABASE: string;
   DB_LOGGING: boolean;
   DB_AUTO_LOAD_MODELS: boolean;
-}
+};
 
 export const CONFIG_DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
   DB_VENDOR: Joi.string().required().valid('mysql', 'sqlite'),
@@ -45,7 +45,7 @@ export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE;
 @Module({})
 export class ConfigModule extends NestConfigModule {
   static forRoot(options: ConfigModuleOptions = {}) {
-    const { envFilePath, ...otherOptions } = options;
+    const { envFilePath = '', ...otherOptions } = options;
     return super.forRoot({
       isGlobal: true,
       envFilePath: [

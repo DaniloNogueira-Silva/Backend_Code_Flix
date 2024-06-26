@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Global, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { CONFIG_SCHEMA_TYPE } from 'src/nest-modules/config-module/config.module';
+import { ConfigService } from '@nestjs/config';
+import { CONFIG_SCHEMA_TYPE } from '../config-module/config.module';
 import { CategoryModel } from '../../core/category/infra/db/sequelize/category.model';
+const models = [
+  CategoryModel,
+];
 
-const models = [CategoryModel];
+@Global()
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
@@ -34,7 +37,7 @@ const models = [CategoryModel];
           };
         }
 
-        throw new Error(`Unknown database configuration: ${dbVendor}`);
+        throw new Error(`Unsupported database configuration: ${dbVendor}`);
       },
       inject: [ConfigService],
     }),
